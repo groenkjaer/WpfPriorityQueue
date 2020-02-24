@@ -17,8 +17,8 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Label Content="Call Centers Smarte App" Grid.ColumnSpan="3" FontSize="72" Margin="0,30,0,0"/>
-        <Button x:Name="btnTagOpkald" Content="Tag Opkald" Width="80" Height="30.5" Grid.Row="1" Click="btnTagOpkald_Click"/>
-        <Button x:Name="btnHangUp" Content="Læg på" Width="80" Height="30.5" Grid.Row="1" Grid.Column="2" Click="btnHangUp_Click" IsEnabled="False"/>
+        <Button x:Name="btnTagOpkald" Content="Tag Opkald" Width="80" Height="30.5" Grid.Row="1" Click="btnTagOpkald_Click" IsDefault="True"/>
+        <Button x:Name="btnHangUp" Content="Læg på" Width="80" Height="30.5" Grid.Row="1" Grid.Column="0" Click="btnHangUp_Click" IsEnabled="False" Margin="0,90,0,0"/>
         <ListBox x:Name="lstboxQueue" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10">
             
         

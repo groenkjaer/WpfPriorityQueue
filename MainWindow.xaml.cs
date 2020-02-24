@@ -47,7 +47,9 @@ namespace WpfPriorityQueue
         private void buttonFlicker()
         {
             btnHangUp.IsEnabled = !btnHangUp.IsEnabled;
+            btnHangUp.IsDefault = !btnHangUp.IsDefault;
             btnTagOpkald.IsEnabled = !btnTagOpkald.IsEnabled;
+            btnTagOpkald.IsDefault = !btnTagOpkald.IsDefault;
         }
     }
 }
