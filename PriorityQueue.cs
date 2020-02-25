@@ -65,14 +65,14 @@ namespace WpfPriorityQueue
             }
             list = temp;
         }
-        public void Dequeue()
+        public void Dequeue() //Remove first element
         {
             if (list.Length < 1)
             {
                 throw new Exception("Queue is empty");
             }
 
-            T[] temp = new T[list.Length - 1]; //New array, one smaller
+            T[] temp = new T[list.Length - 1];
 
             for (int i = 0; i < temp.Length; i++)
             {
