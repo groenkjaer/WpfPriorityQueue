@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Collections.Generic;
+using System.Diagnostics;
+using System.Windows.Threading;
 
 namespace WpfPriorityQueue
 {
@@ -20,17 +10,25 @@ namespace WpfPriorityQueue
     /// </summary>
     public partial class MainWindow : Window
     {
-        PriorityQueue<Customer> queue;
+        PriorityQueue<Customer> queue = new PriorityQueue<Customer>();
         Random rng = new Random();
+        DispatcherTimer timer = new DispatcherTimer();
+        
+        private int Timer { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
-            
-            queue = new PriorityQueue<Customer>();
-            PopulateQueue(queue, new Customer("Simon", rng.Next(1, 3)), new Customer("Fillip", rng.Next(1, 3)), new Customer("Jokum", rng.Next(1, 3)));
+            timer.Tick += Timer_Tick;
+            timer.Interval = new TimeSpan(0, 0, 1);
 
+            PopulateQueue(queue, new Customer("Simon", rng.Next(1, 3)), new Customer("Fillip", rng.Next(1, 3)), new Customer("Jokum", rng.Next(1, 3)));
             PopulateListbox(queue);
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            lblTimer.Content = ++Timer;
         }
 
         private void btnTagOpkald_Click(object sender, RoutedEventArgs e)
@@ -40,6 +38,10 @@ namespace WpfPriorityQueue
                 queue.Dequeue();
                 lstboxQueue.Items.Clear();
                 PopulateListbox(queue);
+                txtOpkald.Text = "I et opkald med " + queue.Peek();
+                Timer = 0;
+                lblTimer.Content = Timer;
+                timer.Start();
             }
             catch (Exception err)
             {
@@ -53,7 +55,7 @@ namespace WpfPriorityQueue
         {
             buttonFlicker();
         }
-        
+
         private void buttonFlicker()
         {
             btnHangUp.IsEnabled = !btnHangUp.IsEnabled;
@@ -61,14 +63,13 @@ namespace WpfPriorityQueue
             btnTagOpkald.IsEnabled = !btnTagOpkald.IsEnabled;
             btnTagOpkald.IsDefault = !btnTagOpkald.IsDefault;
         }
-        
+
         private void PopulateListbox(PriorityQueue<Customer> cs)
         {
             for (int i = 0; i < queue.Length; i++)
             {
                 lstboxQueue.Items.Add(string.Format("{0}'s value is {1} ", cs.OnThisIndex(i), Enum.GetName(typeof(Customer.Values), cs.OnThisIndex(i).CustomerValue)));
             }
-            
         }
 
         private void PopulateQueue(PriorityQueue<Customer> queue, params Customer[] ts)

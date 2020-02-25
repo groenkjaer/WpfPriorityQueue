@@ -22,6 +22,11 @@ namespace WpfPriorityQueue
             return list[index];
         }
 
+        public T Peek()
+        {
+            return list[0];
+        }
+
         public void Add(T itemToAdd) //Queue
         {
             T[] temp = new T[list.Length + 1]; //Create a temporary array, one element larger
