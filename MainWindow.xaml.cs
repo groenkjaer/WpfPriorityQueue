@@ -12,7 +12,8 @@ namespace WpfPriorityQueue
     {
         PriorityQueue<Customer> queue = new PriorityQueue<Customer>();
         Random rng = new Random();
-        DispatcherTimer timer = new DispatcherTimer();
+        DispatcherTimer timer = new DispatcherTimer(); //Timer til opkaldsvarighed
+        DispatcherTimer customerTimer = new DispatcherTimer(); //Timer til hvornår en ny kunde kommer i køen
         
         private int Timer { get; set; }
 
@@ -21,8 +22,17 @@ namespace WpfPriorityQueue
             InitializeComponent();
             timer.Tick += Timer_Tick;
             timer.Interval = new TimeSpan(0, 0, 1);
+            customerTimer.Tick += CustomerTimer_Tick;
+            customerTimer.Interval = new TimeSpan(0, 0, 5); 
+            customerTimer.Start();
 
-            PopulateQueue(queue, new Customer("Simon", rng.Next(1, 3)), new Customer("Fillip", rng.Next(1, 3)), new Customer("Jokum", rng.Next(1, 3)));
+            PopulateQueue(queue, new Customer("Simon", rng.Next(1, 3)), new Customer("Fillip", rng.Next(1, 3)), new Customer("Jokum", rng.Next(1, 3)), new Customer("Isak", rng.Next(1, 3)));
+            PopulateListbox(queue);
+        }
+
+        private void CustomerTimer_Tick(object sender, EventArgs e)
+        {
+            PopulateQueue(queue, new Customer(CustomerNames.names[rng.Next(CustomerNames.names.Length)], rng.Next(1, 3)));
             PopulateListbox(queue);
         }
 
@@ -35,17 +45,16 @@ namespace WpfPriorityQueue
         {
             try
             {
-                queue.Dequeue();
-                lstboxQueue.Items.Clear();
-                PopulateListbox(queue);
                 txtOpkald.Text = "I et opkald med " + queue.Peek();
+                queue.Dequeue();
+                PopulateListbox(queue);
                 Timer = 0;
                 lblTimer.Content = Timer;
                 timer.Start();
             }
-            catch (Exception err)
+            catch (Exception)
             {
-                MessageBox.Show(err.Message);
+                MessageBox.Show("Køen er tom");
                 return;
             }
             buttonFlicker();
@@ -53,6 +62,7 @@ namespace WpfPriorityQueue
 
         private void btnHangUp_Click(object sender, RoutedEventArgs e)
         {
+            timer.Stop();
             buttonFlicker();
         }
 
@@ -66,6 +76,7 @@ namespace WpfPriorityQueue
 
         private void PopulateListbox(PriorityQueue<Customer> cs)
         {
+            lstboxQueue.Items.Clear();
             for (int i = 0; i < queue.Length; i++)
             {
                 lstboxQueue.Items.Add(string.Format("{0}'s value is {1} ", cs.OnThisIndex(i), Enum.GetName(typeof(Customer.Values), cs.OnThisIndex(i).CustomerValue)));
