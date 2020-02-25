@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Diagnostics;
 using System.Windows.Threading;
 
 namespace WpfPriorityQueue
@@ -62,6 +61,7 @@ namespace WpfPriorityQueue
 
         private void btnHangUp_Click(object sender, RoutedEventArgs e)
         {
+            txtOpkald.Text = "Opkald afsluttet";
             timer.Stop();
             buttonFlicker();
         }
